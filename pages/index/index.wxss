@@ -11,10 +11,12 @@ page {
   flex-direction: column;
   background-color: #ffffff;
   overflow: hidden;
+  padding-bottom: 200rpx; /* 保持底部内边距 */
+  padding-top: 80rpx; /* 增加顶部内边距，使内容整体向下移动 */
 }
 
 .header {
-  padding: 20rpx;
+  padding: 30rpx 20rpx; /* 增加上下内边距 */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +24,7 @@ page {
 }
 
 .title {
-  font-size: 36rpx;
+  font-size: 34rpx; /* 稍微增大标题字体大小 */
   font-weight: bold;
 }
 
@@ -30,62 +32,146 @@ page {
   font-size: 40rpx;
 }
 
-.scroll-area {
-  flex: 1;
-  overflow-y: auto;
-}
-
 .assistant-options {
   display: flex;
-  padding: 20rpx;
-  gap: 20rpx;
+  justify-content: space-around;
+  padding: 40rpx 20rpx; /* 增加上下内边距 */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.option-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  width: 30%; /* 给每个选项一个固定的宽度比例 */
+  max-width: 160rpx; /* 设置最大宽度 */
+}
+
+.option-button-container.active {
+  transform: scale(1.1);
 }
 
 .option-button {
-  background-color: #e6f7ff;
-  padding: 10rpx 20rpx;
-  border-radius: 30rpx;
-  font-size: 28rpx;
+  width: 120rpx; /* 稍微增大按钮大小 */
+  height: 120rpx; /* 稍微增大按钮大小 */
+  border-radius: 50%;
+  background-color: #1a1a2b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
-.option-button.active {
-  background-color: #1890ff;
-  color: #ffffff;
+.option-button-container.active .option-button {
+  background-color: #1a1a2b;
+  border: 6rpx solid #FFA500; /* 添加橘色边框 */
+}
+
+.assistant-icon {
+  width: 60rpx; /* 调整图标大小 */
+  height: 60rpx; /* 调整图标大小 */
+}
+
+.option-text {
+  margin-top: 10rpx; /* 增加文字和按钮之间的间距 */
+  font-size: 24rpx; /* 稍微增大文字大小 */
+  color: #333;
+  text-align: center;
+  width: 100%; /* 确保文字宽度与容器相同 */
+  word-wrap: break-word; /* 允许长文本换行 */
+}
+
+/* 添加点击动画 */
+@keyframes clickAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1.1); }
+}
+
+.option-button-container.active {
+  animation: clickAnimation 0.3s ease;
 }
 
 .chat-area {
+  flex: 1;
   padding: 20rpx;
+  overflow-y: auto;
+  margin-bottom: 20rpx; /* 增加底部边距 */
+  width: 100%; /* 添加这一行 */
+  box-sizing: border-box; /* 添加这一行 */
 }
 
 .message {
   display: flex;
   margin-bottom: 20rpx;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 60rpx;  /* 从80rpx减小到60rpx */
+  height: 60rpx; /* 从80rpx减小到60rpx */
+  border-radius: 50%;
+  margin: 0 10rpx; /* 减小边距 */
+}
+
+.ai-avatar {
+  order: -1;
+}
+
+.user-avatar {
+  order: 1;
 }
 
 .message-content {
   background-color: #e6f7ff;
   padding: 20rpx;
   border-radius: 20rpx;
-  max-width: 70%;
+  max-width: calc(100% - 160rpx); /* 调整以适应更小的头像 */
+  word-wrap: break-word;
+}
+
+.user-message {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.user-message .message-content {
+  background-color: #007AFF;
+  color: #FFFFFF;
+  margin-right: 10rpx; /* 为用户头像留出空间 */
+}
+
+.ai-message .message-content {
+  background-color: #F0F0F0;
+  color: #000000;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-top: 1rpx solid #e0e0e0;
+  padding: 20rpx;
 }
 
 .quick-actions {
   display: flex;
-  gap: 20rpx;
-  margin-top: 20rpx;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
 }
 
 .action-button {
+  flex: 1;
   background-color: #e6f7ff;
-  padding: 10rpx 20rpx;
+  padding: 15rpx 20rpx;
   border-radius: 10rpx;
   font-size: 28rpx;
-}
-
-.footer {
-  background-color: #ffffff;
-  border-top: 1rpx solid #e0e0e0;
-  padding: 20rpx;
+  border: none;
+  margin: 0 10rpx;
 }
 
 .input-area {
@@ -121,7 +207,7 @@ page {
 .send-button {
   width: 60rpx;
   height: 60rpx;
-  background-color: #1890ff;
+  background-color: #000000;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -132,4 +218,9 @@ page {
 .send-icon {
   color: white;
   font-size: 24rpx;
+}
+
+.typing-indicator {
+  font-size: 24rpx;
+  color: #888;
 }

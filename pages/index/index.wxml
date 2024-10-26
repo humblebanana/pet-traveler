@@ -7,42 +7,40 @@
     <view class="more-icon">•••</view>
   </view>
 
-  <scroll-view class="scroll-area" scroll-y="true" scroll-into-view="{{scrollToView}}">
-    <view class="assistant-options">
-      <view 
-        wx:for="{{assistantOptions}}" 
-        wx:key="index" 
-        class="option-button {{activeAssistant === index ? 'active' : ''}}"
-        bindtap="setActiveAssistant"
-        data-index="{{index}}"
-      >
-        {{item}}
+  <view class="assistant-options">
+    <view 
+      wx:for="{{assistantOptions}}" 
+      wx:key="index" 
+      class="option-button-container {{activeAssistant === index ? 'active' : ''}}"
+      bindtap="setActiveAssistant"
+      data-index="{{index}}"
+    >
+      <view class="option-button">
+        <image class="assistant-icon" src="/assets/assistant-icon-{{index}}.png" mode="aspectFit"></image>
       </view>
+      <text class="option-text">{{item}}</text>
     </view>
-    
-    <view class="chat-area">
-      <view class="message assistant">
-        <!-- 暂时移除头像图片 -->
-        <view class="message-content">
-          尊敬的XX小姐/先生，我是您的专属出行管家小慢
-        </view>
-      </view>
-      
-      <view class="quick-actions">
-        <button class="action-button" bindtap="onQuickAction" data-action="一键出行">一键出行</button>
-        <button class="action-button" bindtap="onQuickAction" data-action="机票比价">机票比价</button>
-      </view>
+  </view>
 
-      <block wx:for="{{chatHistory}}" wx:key="index">
-        <view id="msg-{{index}}" class="message {{item.sender === 'user' ? 'user-message' : 'ai-message'}}">
+  <scroll-view class="chat-area" scroll-y="true" scroll-into-view="{{scrollToView}}">
+    <block wx:for="{{chatHistory}}" wx:key="index">
+      <view id="msg-{{index}}" class="message {{item.sender === 'user' ? 'user-message' : 'ai-message'}}">
+        <image wx:if="{{item.sender === 'ai'}}" class="avatar ai-avatar" src="/assets/ai-avatar.png" mode="aspectFill"></image>
+        <view class="message-content">
           <text>{{item.content}}</text>
+          <view wx:if="{{item.isTyping}}" class="typing-indicator">...</view>
         </view>
-      </block>
-    </view>
+        <image wx:if="{{item.sender === 'user'}}" class="avatar user-avatar" src="/assets/user-avatar.png" mode="aspectFill"></image>
+      </view>
+    </block>
   </scroll-view>
 </view>
 
 <view class="footer">
+  <view class="quick-actions">
+    <button class="action-button" bindtap="onQuickAction" data-action="一键出行">一键出行</button>
+    <button class="action-button" bindtap="onQuickAction" data-action="机票比价">机票比价</button>
+  </view>
   <view class="input-area">
     <view class="voice-input" bindtap="startVoiceInput">
       <image src="/assets/voice-icon.png" mode="aspectFit" class="voice-icon"></image>
