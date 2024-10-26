@@ -1,24 +1,54 @@
 <!--pages/profile/profile.wxml-->
 <navigation-bar title="我的" back="{{false}}" color="black" background="#FFF"></navigation-bar>
 
-<view class="container">
-  <view class="user-info">
-    <image class="avatar" src="/assets/default-avatar.png" mode="aspectFill"></image>
-    <text class="username">用户名</text>
+<view class="profile-container" style="margin-top: {{statusBarHeight + 44}}px;">
+  <!-- 顶部个人信息区 -->
+  <view class="user-info" bindtap="navigateToDetailProfile">
+    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+    <view class="user-details">
+      <view class="username-gender">
+        <text class="username">{{userInfo.nickName}}</text>
+        <image class="gender-icon" src="/images/male-icon.png"></image>
+      </view>
+      <text class="edit-hint">查看个人主页或编辑资料</text>
+    </view>
   </view>
 
-  <view class="menu-list">
-    <view class="menu-item">
-      <text>我的订单</text>
-      <text class="arrow">></text>
+  <!-- 用户统计信息 -->
+  <view class="user-stats">
+    <view class="stat-item">
+      <text class="stat-number">18</text>
+      <text class="stat-label">关注</text>
     </view>
-    <view class="menu-item">
-      <text>我的收藏</text>
-      <text class="arrow">></text>
+    <view class="stat-item">
+      <text class="stat-number">24</text>
+      <text class="stat-label">粉丝</text>
     </view>
-    <view class="menu-item">
-      <text>设置</text>
-      <text class="arrow">></text>
+    <view class="stat-item">
+      <text class="stat-number">8</text>
+      <text class="stat-label">关注部落</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">10</text>
+      <text class="stat-label">话题</text>
+    </view>
+  </view>
+
+  <!-- 日程区域 -->
+  <view class="schedule-section">
+    <text class="section-title">日程</text>
+    <view class="date-tags">
+      <view class="date-tag" bindtap="selectDate" data-date="2023-10-25">Tour 10月25日</view>
+      <view class="date-tag" bindtap="selectDate" data-date="2023-10-26">Tour 10月26日</view>
+    </view>
+  </view>
+
+  <!-- 地图卡片 -->
+  <view class="map-card">
+    <image src="/assets/map.png" mode="aspectFill" class="map-image"></image>
+    <view class="map-overlay">
+      <view class="map-marker day1">DAY 1</view>
+      <view class="map-marker day3">DAY 3</view>
     </view>
   </view>
 </view>
