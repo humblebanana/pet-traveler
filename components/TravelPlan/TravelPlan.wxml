@@ -1,0 +1,31 @@
+<view class="travel-plan">
+  <view class="timeline">
+    <view wx:for="{{ planData }}" wx:key="time" class="timeline-item">
+      <view class="timeline-time {{ index === activeTimeIndex ? 'active' : '' }}" bindtap="onTimeChange" data-index="{{ index }}">
+        {{ item.time }}
+      </view>
+      <view class="timeline-content">
+        <swiper class="location-swiper" bindchange="onSwiperChange" data-index="{{ index }}" current="{{ item.activeOptionIndex || 0 }}">
+          <swiper-item wx:for="{{ item.options }}" wx:for-item="option" wx:for-index="optionIndex" wx:key="optionIndex">
+            <view class="location-card">
+              <image src="{{ option.image }}" mode="aspectFill" class="location-image"></image>
+              <view class="location-info">
+                <view class="location-name">{{ option.location }}</view>
+                <view class="location-address">{{ option.address }}</view>
+                <view class="pet-friendly">宠物友好: {{ option.petFriendly }}</view>
+                <view class="price">价格: {{ option.price }}元</view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <view class="swipe-indicators">
+          <view class="indicator {{ optionIndex === (item.activeOptionIndex || 0) ? 'active' : '' }}" 
+                wx:for="{{ item.options }}" 
+                wx:for-item="option" 
+                wx:for-index="optionIndex" 
+                wx:key="optionIndex"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

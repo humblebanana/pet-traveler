@@ -47,5 +47,8 @@
         "selectedIconPath": "assets/community_active.png"
       }
     ]
+  },
+  "usingComponents": {
+    "travel-plan": "/components/TravelPlan/TravelPlan"
   }
 }

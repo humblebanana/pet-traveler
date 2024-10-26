@@ -21,29 +21,34 @@
     </view>
   </view>
 
-  <scroll-view class="chat-area" scroll-y="true" scroll-into-view="{{scrollToView}}">
+  <scroll-view class="chat-area" scroll-y="true" scroll-into-view="{{scrollToView}}" bindscrolltolower="loadMoreHistory">
     <block wx:for="{{chatHistory}}" wx:key="index">
       <view id="msg-{{index}}" class="message {{item.sender === 'user' ? 'user-message' : 'ai-message'}}">
         <image wx:if="{{item.sender === 'ai'}}" class="avatar ai-avatar" src="/assets/ai-avatar-{{activeAssistant}}.png" mode="aspectFill"></image>
         <view class="message-content">
           <text>{{item.content}}</text>
           <view wx:if="{{item.isTyping}}" class="typing-indicator">...</view>
+          <travel-plan wx:if="{{travelPlanData && index === chatHistory.length - 1}}" plan-data="{{travelPlanData}}"></travel-plan>
         </view>
         <image wx:if="{{item.sender === 'user'}}" class="avatar user-avatar" src="/assets/user-avatar.png" mode="aspectFill"></image>
       </view>
     </block>
+    <view wx:if="{{isAIThinking}}" class="ai-thinking">
+      <view class="thinking-animation"></view>
+      <text>AI正在思考中...</text>
+    </view>
   </scroll-view>
+
+  <travel-plan wx:if="{{travelPlanVisible}}" plan-data="{{travelPlanData}}"></travel-plan>
 </view>
 
 <view class="footer">
   <scroll-view 
+    wx:if="{{showQuickActions}}"
     class="quick-actions" 
     scroll-x="true" 
     enhanced="true" 
     show-scrollbar="false"
-    scroll-left="{{scrollLeft}}"
-    bindtouchstart="handleTouchStart"
-    bindtouchend="handleTouchEnd"
   >
     <button class="action-button" bindtap="onQuickAction" data-action="一日出行规划">
       <text>一日出行规划🐶</text>

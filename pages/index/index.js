@@ -7,33 +7,28 @@ Page({
     assistantOptions: ['走遍中国的小狮子', '喜欢city walk的小浣熊', '飞行绕地球一圈的猫头鹰'],
     activeAssistant: 0,
     initialMessages: [
-      "你好呀，朋友，我是你的专属出行管家小狮子",
-      "你好呀，朋友，我是你的city walk管家小浣熊",
-      "你好呀，朋友，我是你的旅行管家猫头鹰"
+      "hello，我是您的宠物的好朋友小浣熊，我和我的主人有很多city walk的旅游路线可以推荐，请告诉我您的偏好吧～",
+      "hello，我是您的宠物的好朋友小狮子，我和我的主人有很多国内的旅游路线可以推荐，请您告诉我的偏好吧～",
+      "hello，我是您的宠物的好朋友小狮子，我和我的主人有很多国外的旅游路线可以推荐，请您告诉我的偏好吧～"
     ],
-    scrollLeft: 0,
-    scrollInterval: null
+    isAIThinking: false,
+    showTravelPlan: false,
+    travelPlanData: null,
+    isWaitingForTravelInfo: false,
+    showQuickActions: true,
   },
 
   onLoad() {
-    // 初始化界面后显示第一条AI消息
     this.addMessageToChat('ai', this.data.initialMessages[0]);
-    this.startAutoScroll();
   },
 
   onUnload() {
-    this.stopAutoScroll();
   },
 
   onInput(e) {
     this.setData({
       inputValue: e.detail.value
     });
-  },
-
-  startVoiceInput() {
-    console.log('Starting voice input');
-    // 实现语音输入的逻辑
   },
 
   sendMessage() {
@@ -43,31 +38,26 @@ Page({
     this.addMessageToChat('user', userMessage);
     this.setData({ inputValue: '' });
 
-    // 显示AI正在输入的提示
-    this.setData({
-      chatHistory: [...this.data.chatHistory, { sender: 'ai', content: '正在输入...', isTyping: true }]
-    });
-
-    // 模拟AI回复
-    setTimeout(() => {
-      const aiResponse = this.generateAIResponse(userMessage);
-      // 移除"正在输入"的消息
-      let updatedHistory = this.data.chatHistory.filter(msg => !msg.isTyping);
-      updatedHistory.push({ sender: 'ai', content: aiResponse });
-      
-      this.setData({
-        chatHistory: updatedHistory,
-        scrollToView: `msg-${updatedHistory.length - 1}`
-      });
-    }, 1500);
+    if (this.data.isWaitingForTravelInfo) {
+      this.handleTravelInfoResponse(userMessage);
+    } else if (userMessage.includes('一日出行规划')) {
+      this.handleTravelPlanRequest();
+    } else {
+      this.generateAIResponse(userMessage);
+    }
   },
 
-  addMessageToChat(sender, content) {
-    const newChatHistory = [...this.data.chatHistory, { 
+  addMessageToChat(sender, content, travelPlanData = null) {
+    const newMessage = { 
       sender, 
       content,
-      avatarIndex: this.data.activeAssistant // 添加这一行
-    }];
+      avatarIndex: this.data.activeAssistant
+    };
+    if (travelPlanData) {
+      newMessage.showTravelPlan = true;
+      newMessage.travelPlanData = travelPlanData;
+    }
+    const newChatHistory = [...this.data.chatHistory, newMessage];
     const scrollToView = `msg-${newChatHistory.length - 1}`;
     
     this.setData({
@@ -77,6 +67,25 @@ Page({
   },
 
   generateAIResponse(userMessage) {
+    if (userMessage.includes('时间') && userMessage.includes('地点') && userMessage.includes('宠物')) {
+      this.setData({ isAIThinking: true });
+      
+      // 模拟AI思考过程
+      setTimeout(() => {
+        const planData = this.generateTravelPlan();
+        const aiResponse = "根据您提供的信息，我为您生成了以下一日出行规划：";
+        
+        this.addMessageToChat('ai', aiResponse, planData);
+        this.setData({
+          isAIThinking: false,
+          showTravelPlan: true,
+          travelPlanData: planData
+        });
+      }, 3000);
+
+      return;
+    }
+
     const responses = [
       "这是一个很好的旅行问题！让我为您提供一些建议...",
       "关于这个旅行目的地，我有以下信息可以分享...",
@@ -87,44 +96,27 @@ Page({
     return responses[Math.floor(Math.random() * responses.length)] + " 关于'" + userMessage + "'的更多旅行信息，我们可以继续探讨。";
   },
 
-  createImage() {
-    wx.showToast({
-      title: '正在为您创建图片...',
-      icon: 'loading',
-      duration: 2000
-    });
-  },
-
-  createCalendar() {
-    wx.showToast({
-      title: '正在创建内容日历...',
-      icon: 'loading',
-      duration: 2000
-    });
-  },
-
   setActiveAssistant(e) {
     const index = e.currentTarget.dataset.index;
     this.setData({
       activeAssistant: index,
       chatHistory: [] // 清空聊天历史
     });
-    // 添加新选择的助手的初始消息
     this.addMessageToChat('ai', this.data.initialMessages[index]);
   },
 
   onQuickAction(e) {
     const action = e.currentTarget.dataset.action;
-    console.log(`Quick action: ${action}`);
+    if (action === '一日出行���划') {
+      this.handleTravelPlanRequest();
+      this.setData({ showQuickActions: false });
+      return;
+    }
     this.addMessageToChat('user', action);
     
-    // 模拟AI回复
     setTimeout(() => {
       let aiResponse;
       switch(action) {
-        case '一日出行规划':
-          aiResponse = "好的，我来帮您规划一日出行。您想去哪里玩呢？";
-          break;
         case '旅行物品准备':
           aiResponse = "为您的旅行准备物品是个好主意。您计划去哪里旅行？我可以根据目的地和季节为您提供建议。";
           break;
@@ -141,33 +133,80 @@ Page({
     }, 1000);
   },
 
-  startAutoScroll() {
-    const query = wx.createSelectorQuery();
-    query.select('.quick-actions').boundingClientRect();
-    query.exec((res) => {
-      const scrollViewWidth = res[0].width;
-      let scrollLeft = 0;
-      this.data.scrollInterval = setInterval(() => {
-        scrollLeft += 1;
-        if (scrollLeft >= scrollViewWidth) {
-          scrollLeft = 0;
+  handleOneDayTravelPlan() {
+    const planData = this.generateTravelPlan();
+    const aiResponse = "好的，我为您生成了一份一日出行规划。以下是详细安排：";
+    
+    this.addMessageToChat('ai', aiResponse, planData);
+  },
+
+  generateTravelPlan() {
+    const timeSlots = ['09:00', '12:00', '15:00', '18:00', '21:00'];
+    return timeSlots.map(time => ({
+      time,
+      options: [
+        {
+          location: this.getRandomLocation(),
+          address: this.getRandomAddress(),
+          image: `/assets/location-${Math.floor(Math.random() * 5) + 1}.jpg`,
+          petFriendly: this.getRandomPetFriendlyReason(),
+          price: `${Math.floor(Math.random() * 200) + 50}`,
+        },
+        {
+          location: this.getRandomLocation(),
+          address: this.getRandomAddress(),
+          image: `/assets/location-${Math.floor(Math.random() * 5) + 1}.jpg`,
+          petFriendly: this.getRandomPetFriendlyReason(),
+          price: `${Math.floor(Math.random() * 200) + 50}`,
         }
-        this.setData({ scrollLeft });
-      }, 30);
-    });
+      ],
+      activeOptionIndex: 0
+    }));
   },
 
-  stopAutoScroll() {
-    if (this.data.scrollInterval) {
-      clearInterval(this.data.scrollInterval);
-    }
+  getRandomLocation() {
+    const locations = ['宠物主题咖啡厅', '宠物友好公园', '宠物摄影工作室', '宠物SPA中心', '宠物主题餐厅'];
+    return locations[Math.floor(Math.random() * locations.length)];
   },
 
-  handleTouchStart() {
-    this.stopAutoScroll();
+  getRandomAddress() {
+    return `XX市YY区ZZ街${Math.floor(Math.random() * 100) + 1}号`;
   },
 
-  handleTouchEnd() {
-    this.startAutoScroll();
-  }
+  getRandomPetFriendlyReason() {
+    const reasons = [
+      '提供宠物专属座位和餐具',
+      '有专门的宠物活动区域',
+      '提供宠物美容和护理服务',
+      '有专业的宠物摄影师',
+      '提供宠物专属的休息区'
+    ];
+    return reasons[Math.floor(Math.random() * reasons.length)];
+  },
+
+  loadMoreHistory() {
+    // 这里可以添加加载更多历史消息的逻辑
+    console.log('Loading more history...');
+  },
+
+  handleTravelPlanRequest() {
+    const aiResponse = "好的，我可以帮您制定一日出行规划。请告诉我时间、地点和您携带的宠物。";
+    this.addMessageToChat('ai', aiResponse);
+    this.setData({ isWaitingForTravelInfo: true });
+  },
+
+  handleTravelInfoResponse(userMessage) {
+    this.setData({ isAIThinking: true, isWaitingForTravelInfo: false });
+    
+    setTimeout(() => {
+      const planData = this.generateTravelPlan();
+      const aiResponse = "根据您提供的信息，我为您生成了以下一日出行规划：";
+      
+      this.addMessageToChat('ai', aiResponse, planData);
+      this.setData({
+        isAIThinking: false,
+        travelPlanData: planData
+      });
+    }, 3000);
+  },
 });
