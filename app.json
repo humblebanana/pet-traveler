@@ -35,16 +35,16 @@
         "selectedIconPath": "assets/travel_active.png"
       },
       {
-        "pagePath": "pages/community/community",
-        "text": "社区",
-        "iconPath": "assets/community_inactive.png",
-        "selectedIconPath": "assets/community_active.png"
-      },
-      {
         "pagePath": "pages/profile/profile",
         "text": "我的",
         "iconPath": "assets/profile_inactive.png",
         "selectedIconPath": "assets/profile_active.png"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区",
+        "iconPath": "assets/community_inactive.png",
+        "selectedIconPath": "assets/community_active.png"
       }
     ]
   }

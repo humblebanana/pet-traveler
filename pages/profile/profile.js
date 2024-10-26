@@ -5,14 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    // 初始数据
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    // 页面加载时执行
   },
 
   /**
@@ -26,7 +26,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    if (typeof this.getTabBar === 'function' &&
+        this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 1 // 设置为"我的"页面的索引
+      })
+    }
   },
 
   /**

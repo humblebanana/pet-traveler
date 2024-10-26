@@ -1,3 +1,40 @@
+<navigation-bar title="社区" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
 <view class="container">
-  <text>社区页面</text>
+  <scroll-view class="waterfall" scroll-y="true" bindscrolltolower="loadMorePosts">
+    <view class="column">
+      <view class="post-item" wx:for="{{leftPosts}}" wx:key="id">
+        <image class="post-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="post-content">
+          <text class="post-title">{{item.title}}</text>
+          <text class="post-description">{{item.description}}</text>
+          <view class="post-info">
+            <image class="user-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
+            <text class="user-name">{{item.userName}}</text>
+            <view class="like-info">
+              <image class="like-icon" src="/assets/like-icon.png"></image>
+              <text class="like-count">{{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="column">
+      <view class="post-item" wx:for="{{rightPosts}}" wx:key="id">
+        <image class="post-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="post-content">
+          <text class="post-title">{{item.title}}</text>
+          <text class="post-description">{{item.description}}</text>
+          <view class="post-info">
+            <image class="user-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
+            <text class="user-name">{{item.userName}}</text>
+            <view class="like-info">
+              <image class="like-icon" src="/assets/like-icon.png"></image>
+              <text class="like-count">{{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
 </view>
