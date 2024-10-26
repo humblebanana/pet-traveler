@@ -38,8 +38,18 @@
 
 <view class="footer">
   <view class="quick-actions">
-    <button class="action-button" bindtap="onQuickAction" data-action="一键出行">一键出行</button>
-    <button class="action-button" bindtap="onQuickAction" data-action="机票比价">机票比价</button>
+    <button class="action-button" bindtap="onQuickAction" data-action="一日出行规划">
+      <text>一日出行规划🐶</text>
+    </button>
+    <button class="action-button" bindtap="onQuickAction" data-action="旅行物品准备">
+      <text>旅行物品准备📦</text>
+    </button>
+    <button class="action-button" bindtap="onQuickAction" data-action="宠物酒店推荐">
+      <text>宠物酒店推荐🏨</text>
+    </button>
+    <button class="action-button" bindtap="onQuickAction" data-action="机票价格比较">
+      <text>机票价格比较✈️</text>
+    </button>
   </view>
   <view class="input-area">
     <view class="voice-input" bindtap="startVoiceInput">

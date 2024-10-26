@@ -148,6 +148,7 @@ page {
   color: #000000;
 }
 
+/* 修改 footer 样式 */
 .footer {
   position: fixed;
   bottom: 0;
@@ -155,23 +156,58 @@ page {
   right: 0;
   background-color: #ffffff;
   border-top: 1rpx solid #e0e0e0;
-  padding: 20rpx;
+  padding: 20rpx 0;
+  z-index: 1000; /* 确保footer在最上层 */
 }
 
+/* 修改 quick-actions 样式 */
 .quick-actions {
   display: flex;
-  justify-content: space-between;
+  white-space: nowrap;
+  overflow-x: auto;
   margin-bottom: 20rpx;
+  padding: 0 20rpx;
+  height: 90rpx; /* 增加高度以适应更高的按钮 */
 }
 
+/* 修改 action-button 样式 */
 .action-button {
-  flex: 1;
-  background-color: #e6f7ff;
-  padding: 15rpx 20rpx;
-  border-radius: 10rpx;
-  font-size: 28rpx;
+  flex: 0 0 auto;
+  background-color: #1a1a2b;
+  padding: 10rpx 20rpx;
+  border-radius: 50rpx;
   border: none;
-  margin: 0 10rpx;
+  font-size: 24rpx; /* 稍微减小字体大小 */
+  margin-right: 20rpx; /* 减小右边距 */
+  color: #FFFFFF;
+  display: inline-block;
+  height: 30rpx; /* 增加高度以适应两行文本 */
+  line-height: 1.2; /* 调整行高 */
+  text-align: center;
+  white-space: normal; /* 允许文本换行 */
+  width: 160rpx; /* 设置固定宽度 */
+}
+
+/* 为最后一个按钮移除右边距 */
+.action-button:last-child {
+  margin-right: 0;
+}
+
+/* 修改 quick-actions 样式，增加左右内边距 */
+.quick-actions {
+  display: flex;
+  white-space: nowrap;
+  overflow-x: auto;
+  margin-bottom: 20rpx;
+  padding: 0 20rpx; /* 增加左右内边距，从20rpx改为30rpx */
+  height: 80rpx; /* 设置一个固定高度 */
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 
 .input-area {

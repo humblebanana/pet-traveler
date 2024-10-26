@@ -110,10 +110,21 @@ Page({
     // 模拟AI回复
     setTimeout(() => {
       let aiResponse;
-      if (action === '一键出行') {
-        aiResponse = "好的，我来帮您规划一下行程。您想去哪里旅行呢？";
-      } else if (action === '机票比价') {
-        aiResponse = "没问题，我可以帮您比较机票价格。请告诉我您的出发地、目的地和大致日期。";
+      switch(action) {
+        case '一日出行规划':
+          aiResponse = "好的，我来帮您规划一日出行。您想去哪里玩呢？";
+          break;
+        case '旅行物品准备':
+          aiResponse = "为您的旅行准备物品是个好主意。您计划去哪里旅行？我可以根据目的地和季节为您提供建议。";
+          break;
+        case '宠物酒店推荐':
+          aiResponse = "我可以为您推荐宠物友好的酒店。您要去哪个城市，有什么特别的需求吗？";
+          break;
+        case '机票价格比较':
+          aiResponse = "我可以帮您比较机票价格。请告诉我您的出发地、目的地和大致日期。";
+          break;
+        default:
+          aiResponse = "抱歉，我没有理解您的请求。请告诉我更多关于您需要帮助的细节。";
       }
       this.addMessageToChat('ai', aiResponse);
     }, 1000);
