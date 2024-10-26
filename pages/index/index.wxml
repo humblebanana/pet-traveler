@@ -1,0 +1,55 @@
+<!--index.wxml-->
+<navigation-bar title="AI旅行助手" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="container">
+  <view class="header">
+    <text class="title">AI宠物携带出行管家</text>
+    <view class="more-icon">•••</view>
+  </view>
+
+  <scroll-view class="scroll-area" scroll-y="true" scroll-into-view="{{scrollToView}}">
+    <view class="assistant-options">
+      <view 
+        wx:for="{{assistantOptions}}" 
+        wx:key="index" 
+        class="option-button {{activeAssistant === index ? 'active' : ''}}"
+        bindtap="setActiveAssistant"
+        data-index="{{index}}"
+      >
+        {{item}}
+      </view>
+    </view>
+    
+    <view class="chat-area">
+      <view class="message assistant">
+        <!-- 暂时移除头像图片 -->
+        <view class="message-content">
+          尊敬的XX小姐/先生，我是您的专属出行管家小慢
+        </view>
+      </view>
+      
+      <view class="quick-actions">
+        <button class="action-button" bindtap="onQuickAction" data-action="一键出行">一键出行</button>
+        <button class="action-button" bindtap="onQuickAction" data-action="机票比价">机票比价</button>
+      </view>
+
+      <block wx:for="{{chatHistory}}" wx:key="index">
+        <view id="msg-{{index}}" class="message {{item.sender === 'user' ? 'user-message' : 'ai-message'}}">
+          <text>{{item.content}}</text>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="footer">
+  <view class="input-area">
+    <view class="voice-input" bindtap="startVoiceInput">
+      <image src="/assets/voice-icon.png" mode="aspectFit" class="voice-icon"></image>
+    </view>
+    <input class="message-input" type="text" placeholder="输入消息..." bindinput="onInput" value="{{inputValue}}" bindconfirm="sendMessage" confirm-type="send" />
+    <view class="send-button" bindtap="sendMessage">
+      <text class="send-icon">➤</text>
+    </view>
+  </view>
+</view>

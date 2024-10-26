@@ -1,0 +1,135 @@
+/**index.wxss**/
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.header {
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx solid #e0e0e0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.more-icon {
+  font-size: 40rpx;
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.assistant-options {
+  display: flex;
+  padding: 20rpx;
+  gap: 20rpx;
+}
+
+.option-button {
+  background-color: #e6f7ff;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+}
+
+.option-button.active {
+  background-color: #1890ff;
+  color: #ffffff;
+}
+
+.chat-area {
+  padding: 20rpx;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.message-content {
+  background-color: #e6f7ff;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  max-width: 70%;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.action-button {
+  background-color: #e6f7ff;
+  padding: 10rpx 20rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+}
+
+.footer {
+  background-color: #ffffff;
+  border-top: 1rpx solid #e0e0e0;
+  padding: 20rpx;
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+}
+
+.voice-input {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20rpx;
+}
+
+.voice-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.message-input {
+  flex: 1;
+  height: 60rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 30rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+}
+
+.send-button {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #1890ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20rpx;
+}
+
+.send-icon {
+  color: white;
+  font-size: 24rpx;
+}
