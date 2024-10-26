@@ -4,18 +4,25 @@ Page({
     inputValue: '',
     chatHistory: [],
     scrollToView: '',
-    assistantOptions: ['管家小慢', '管家小快', '管家小中'],
+    assistantOptions: ['走遍中国的小狮子', '喜欢city walk的小浣熊', '飞行绕地球一圈的猫头鹰'],
     activeAssistant: 0,
     initialMessages: [
-      "你好呀，朋友，我是你的专属出行管家小慢",
-      "你好呀，朋友，我是你的city walk管家小快",
-      "你好呀，朋友，我是你的旅行管家小中"
-    ]
+      "你好呀，朋友，我是你的专属出行管家小狮子",
+      "你好呀，朋友，我是你的city walk管家小浣熊",
+      "你好呀，朋友，我是你的旅行管家猫头鹰"
+    ],
+    scrollLeft: 0,
+    scrollInterval: null
   },
 
   onLoad() {
     // 初始化界面后显示第一条AI消息
     this.addMessageToChat('ai', this.data.initialMessages[0]);
+    this.startAutoScroll();
+  },
+
+  onUnload() {
+    this.stopAutoScroll();
   },
 
   onInput(e) {
@@ -56,7 +63,11 @@ Page({
   },
 
   addMessageToChat(sender, content) {
-    const newChatHistory = [...this.data.chatHistory, { sender, content }];
+    const newChatHistory = [...this.data.chatHistory, { 
+      sender, 
+      content,
+      avatarIndex: this.data.activeAssistant // 添加这一行
+    }];
     const scrollToView = `msg-${newChatHistory.length - 1}`;
     
     this.setData({
@@ -128,5 +139,35 @@ Page({
       }
       this.addMessageToChat('ai', aiResponse);
     }, 1000);
+  },
+
+  startAutoScroll() {
+    const query = wx.createSelectorQuery();
+    query.select('.quick-actions').boundingClientRect();
+    query.exec((res) => {
+      const scrollViewWidth = res[0].width;
+      let scrollLeft = 0;
+      this.data.scrollInterval = setInterval(() => {
+        scrollLeft += 1;
+        if (scrollLeft >= scrollViewWidth) {
+          scrollLeft = 0;
+        }
+        this.setData({ scrollLeft });
+      }, 30);
+    });
+  },
+
+  stopAutoScroll() {
+    if (this.data.scrollInterval) {
+      clearInterval(this.data.scrollInterval);
+    }
+  },
+
+  handleTouchStart() {
+    this.stopAutoScroll();
+  },
+
+  handleTouchEnd() {
+    this.startAutoScroll();
   }
 });

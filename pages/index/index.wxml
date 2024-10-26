@@ -15,8 +15,7 @@
       bindtap="setActiveAssistant"
       data-index="{{index}}"
     >
-      <view class="option-button">
-        <image class="assistant-icon" src="/assets/assistant-icon-{{index}}.png" mode="aspectFit"></image>
+      <view class="option-button" style="background-image: url('/assets/assistant-icon-{{index}}.png');">
       </view>
       <text class="option-text">{{item}}</text>
     </view>
@@ -25,7 +24,7 @@
   <scroll-view class="chat-area" scroll-y="true" scroll-into-view="{{scrollToView}}">
     <block wx:for="{{chatHistory}}" wx:key="index">
       <view id="msg-{{index}}" class="message {{item.sender === 'user' ? 'user-message' : 'ai-message'}}">
-        <image wx:if="{{item.sender === 'ai'}}" class="avatar ai-avatar" src="/assets/ai-avatar.png" mode="aspectFill"></image>
+        <image wx:if="{{item.sender === 'ai'}}" class="avatar ai-avatar" src="/assets/ai-avatar-{{activeAssistant}}.png" mode="aspectFill"></image>
         <view class="message-content">
           <text>{{item.content}}</text>
           <view wx:if="{{item.isTyping}}" class="typing-indicator">...</view>
@@ -37,7 +36,15 @@
 </view>
 
 <view class="footer">
-  <view class="quick-actions">
+  <scroll-view 
+    class="quick-actions" 
+    scroll-x="true" 
+    enhanced="true" 
+    show-scrollbar="false"
+    scroll-left="{{scrollLeft}}"
+    bindtouchstart="handleTouchStart"
+    bindtouchend="handleTouchEnd"
+  >
     <button class="action-button" bindtap="onQuickAction" data-action="一日出行规划">
       <text>一日出行规划🐶</text>
     </button>
@@ -50,11 +57,9 @@
     <button class="action-button" bindtap="onQuickAction" data-action="机票价格比较">
       <text>机票价格比较✈️</text>
     </button>
-  </view>
+  </scroll-view>
   <view class="input-area">
-    <view class="voice-input" bindtap="startVoiceInput">
-      <image src="/assets/voice-icon.png" mode="aspectFit" class="voice-icon"></image>
-    </view>
+    <view class="voice-input" bindtap="startVoiceInput"></view>
     <input class="message-input" type="text" placeholder="输入消息..." bindinput="onInput" value="{{inputValue}}" bindconfirm="sendMessage" confirm-type="send" />
     <view class="send-button" bindtap="sendMessage">
       <text class="send-icon">➤</text>

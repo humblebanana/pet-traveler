@@ -1,10 +1,13 @@
 /**index.wxss**/
+
+/* 页面整体样式 */
 page {
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* 主容器样式 */
 .container {
   flex: 1;
   display: flex;
@@ -15,6 +18,7 @@ page {
   padding-top: 80rpx; /* 增加顶部内边距，使内容整体向下移动 */
 }
 
+/* 头部样式 */
 .header {
   padding: 30rpx 20rpx; /* 增加上下内边距 */
   display: flex;
@@ -23,15 +27,18 @@ page {
   border-bottom: 1rpx solid #e0e0e0;
 }
 
+/* 标题样式 */
 .title {
   font-size: 34rpx; /* 稍微增大标题字体大小 */
   font-weight: bold;
 }
 
+/* 更多图标样式 */
 .more-icon {
   font-size: 40rpx;
 }
 
+/* 助手选项区域样式 */
 .assistant-options {
   display: flex;
   justify-content: space-around;
@@ -40,6 +47,7 @@ page {
   box-sizing: border-box;
 }
 
+/* 选项按钮容器样式 */
 .option-button-container {
   display: flex;
   flex-direction: column;
@@ -49,51 +57,60 @@ page {
   max-width: 160rpx; /* 设置最大宽度 */
 }
 
+/* 激活状态的选项按钮容器样式 */
 .option-button-container.active {
   transform: scale(1.1);
 }
 
+/* 选项按钮样式 */
 .option-button {
-  width: 120rpx; /* 稍微增大按钮大小 */
-  height: 120rpx; /* 稍微增大按钮大小 */
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 50%;
-  background-color: #1a1a2b;
+  background-color: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+/* 激活状态的选项按钮样式 */
 .option-button-container.active .option-button {
-  background-color: #1a1a2b;
-  border: 6rpx solid #FFA500; /* 添加橘色边框 */
+  border: 6rpx solid #FFA500;
 }
 
+/* 移除助手图标样式 */
 .assistant-icon {
-  width: 60rpx; /* 调整图标大小 */
-  height: 60rpx; /* 调整图标大小 */
+  display: none;
 }
 
+/* 选项文本样式 */
 .option-text {
   margin-top: 10rpx; /* 增加文字和按钮之间的间距 */
   font-size: 24rpx; /* 稍微增大文字大小 */
+  font-weight: bold;
   color: #333;
   text-align: center;
   width: 100%; /* 确保文字宽度与容器相同 */
   word-wrap: break-word; /* 允许长文本换行 */
 }
 
-/* 添加点击动画 */
+/* 点击动画 */
 @keyframes clickAnimation {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
   100% { transform: scale(1.1); }
 }
 
+/* 激活状态的选项按钮容器动画 */
 .option-button-container.active {
   animation: clickAnimation 0.3s ease;
 }
 
+/* 聊天区域样式 */
 .chat-area {
   flex: 1;
   padding: 20rpx;
@@ -103,52 +120,63 @@ page {
   box-sizing: border-box; /* 添加这一行 */
 }
 
+/* 消息样式 */
 .message {
   display: flex;
   margin-bottom: 20rpx;
   align-items: flex-start;
 }
 
+/* 头像样式 */
 .avatar {
-  width: 60rpx;  /* 从80rpx减小到60rpx */
-  height: 60rpx; /* 从80rpx减小到60rpx */
+  width: 80rpx;  /* 从80rpx减小到60rpx */
+  height: 80rpx; /* 从80rpx减小到60rpx */
   border-radius: 50%;
   margin: 0 10rpx; /* 减小边距 */
 }
 
+/* AI头像样式 */
 .ai-avatar {
   order: -1;
 }
 
+/* 用户头像样式 */
 .user-avatar {
   order: 1;
 }
 
+/* 消息内容样式 */
 .message-content {
   background-color: #e6f7ff;
   padding: 20rpx;
   border-radius: 20rpx;
-  max-width: calc(100% - 160rpx); /* 调整以适应更小的头像 */
+  max-width: calc(100% - 160rpx);
   word-wrap: break-word;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1); /* 添加轻微阴影 */
 }
 
+/* 用户消息样式 */
 .user-message {
   flex-direction: row;
   justify-content: flex-end;
 }
 
+/* 用户消息内容样式 */
 .user-message .message-content {
-  background-color: #007AFF;
+  background-color: #1a1a2b;
   color: #FFFFFF;
-  margin-right: 10rpx; /* 为用户头像留出空间 */
+  margin-right: 10rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2); /* 为用户消息添加稍强一些的阴影 */
 }
 
+/* AI消息内容样式 */
 .ai-message .message-content {
   background-color: #F0F0F0;
   color: #000000;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1); /* 为AI消息添加轻微阴影 */
 }
 
-/* 修改 footer 样式 */
+/* 页脚样式 */
 .footer {
   position: fixed;
   bottom: 0;
@@ -160,7 +188,7 @@ page {
   z-index: 1000; /* 确保footer在最上层 */
 }
 
-/* 修改 quick-actions 样式 */
+/* 快速操作区域样式 */
 .quick-actions {
   display: flex;
   white-space: nowrap;
@@ -170,7 +198,7 @@ page {
   height: 90rpx; /* 增加高度以适应更高的按钮 */
 }
 
-/* 修改 action-button 样式 */
+/* 操作按钮样式 */
 .action-button {
   flex: 0 0 auto;
   background-color: #1a1a2b;
@@ -188,12 +216,12 @@ page {
   width: 160rpx; /* 设置固定宽度 */
 }
 
-/* 为最后一个按钮移除右边距 */
+/* 最后一个操作按钮样式 */
 .action-button:last-child {
   margin-right: 0;
 }
 
-/* 修改 quick-actions 样式，增加左右内边距 */
+/* 快速操作区域样式（修改版） */
 .quick-actions {
   display: flex;
   white-space: nowrap;
@@ -204,33 +232,36 @@ page {
 }
 
 /* 隐藏滚动条 */
-::-webkit-scrollbar {
+.-webkit-scrollbar {
   width: 0;
   height: 0;
   color: transparent;
 }
 
+/* 输入区域样式 */
 .input-area {
   display: flex;
   align-items: center;
 }
 
+/* 修改语音输入按钮样式 */
 .voice-input {
   width: 60rpx;
   height: 60rpx;
-  background-color: #f0f0f0;
+  background-image: url('/assets/voice-icon.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-right: 20rpx;
 }
 
+/* 移除语音图标样式，因为我们不再需要它 */
 .voice-icon {
-  width: 40rpx;
-  height: 40rpx;
+  display: none;
 }
 
+/* 消息输入框样式 */
 .message-input {
   flex: 1;
   height: 60rpx;
@@ -240,6 +271,7 @@ page {
   font-size: 28rpx;
 }
 
+/* 发送按钮样式 */
 .send-button {
   width: 60rpx;
   height: 60rpx;
@@ -251,11 +283,13 @@ page {
   margin-left: 20rpx;
 }
 
+/* 发送图标样式 */
 .send-icon {
   color: white;
   font-size: 24rpx;
 }
 
+/* 输入指示器样式 */
 .typing-indicator {
   font-size: 24rpx;
   color: #888;
