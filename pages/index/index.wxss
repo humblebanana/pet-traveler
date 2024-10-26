@@ -143,6 +143,8 @@ page {
 /* 用户头像样式 */
 .user-avatar {
   order: 1;
+  width: 60rpx;  /* 从80rpx减小到60rpx */
+  height: 60rpx; /* 从80rpx减小到60rpx */
 }
 
 /* 消息内容样式 */
@@ -163,7 +165,7 @@ page {
 
 /* 用户消息内容样式 */
 .user-message .message-content {
-  background-color: #1a1a2b;
+  background-color: #FFA500;
   color: #FFFFFF;
   margin-right: 10rpx;
   box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2); /* 为用户消息添加稍强一些的阴影 */
@@ -242,18 +244,19 @@ page {
 .input-area {
   display: flex;
   align-items: center;
+  padding: 10rpx 20rpx; /* 添加内边距 */
 }
 
 /* 修改语音输入按钮样式 */
 .voice-input {
-  width: 60rpx;
-  height: 60rpx;
+  width: 50rpx; /* 减小宽度 */
+  height: 50rpx; /* 减小高度 */
   background-image: url('/assets/voice-icon.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 50%;
-  margin-right: 20rpx;
+  margin-right: 15rpx; /* 减小右边距 */
 }
 
 /* 移除语音图标样式，因为我们不再需要它 */
@@ -267,26 +270,26 @@ page {
   height: 60rpx;
   border: 1rpx solid #e0e0e0;
   border-radius: 30rpx;
-  padding: 0 20rpx;
-  font-size: 28rpx;
+  padding: 0 15rpx; /* 减小内边距 */
+  font-size: 26rpx; /* 稍微减小字体大小 */
 }
 
 /* 发送按钮样式 */
 .send-button {
-  width: 60rpx;
-  height: 60rpx;
+  width: 50rpx; /* 减小宽度 */
+  height: 50rpx; /* 减小高度 */
   background-color: #000000;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 20rpx;
+  margin-left: 15rpx; /* 减小左边距 */
 }
 
 /* 发送图标样式 */
 .send-icon {
   color: white;
-  font-size: 24rpx;
+  font-size: 22rpx; /* 稍微减小字体大小 */
 }
 
 /* 输入指示器样式 */
