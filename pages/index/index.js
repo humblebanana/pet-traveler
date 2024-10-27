@@ -16,6 +16,7 @@ Page({
     travelPlanData: null,
     isWaitingForTravelInfo: false,
     showQuickActions: true,
+    InputBottom: 0,  // 添加输入框距离
   },
 
   onLoad() {
@@ -31,24 +32,33 @@ Page({
     });
   },
 
+  InputFocus(e) {
+    this.setData({
+      InputBottom: e.detail.height
+    });
+    this.scrollToBottom();
+  },
+
+  InputBlur(e) {
+    this.setData({
+      InputBottom: 0
+    });
+  },
+
   sendMessage() {
     if (!this.data.inputValue.trim()) return;
 
     const userMessage = this.data.inputValue;
     this.addMessageToChat('user', userMessage);
-    this.setData({ inputValue: '' });
-    console.log("q:", userMessage)
-    this.GLM4(userMessage)
-
-
-    if (this.data.isWaitingForTravelInfo) {
-      this.handleTravelInfoResponse(userMessage);
-    } else if (userMessage.includes('一日出行规划')) {
-      this.handleTravelPlanRequest();
-    } else {
-      this.generateAIResponse(userMessage);
-    }
+    this.setData({ 
+      inputValue: '',
+      scrollToView: `msg-${this.data.chatHistory.length - 1}`  // 更新滚动位置
+    });
+    
+    console.log("q:", userMessage);
+    this.GLM4(userMessage);
   },
+
   GLM4(content) {
     const that = this;
     wx.request({
@@ -72,6 +82,11 @@ Page({
           const robContent = res.data.choices[0].message.content;
           console.log("AI回复:", robContent);
           that.addMessageToChat('ai', robContent);
+          
+          // 更新滚动位置到最新消息
+          that.setData({
+            scrollToView: `msg-${that.data.chatHistory.length - 1}`
+          });
         } else {
           console.error("API响应格式不正确:", res.data);
           that.addMessageToChat('ai', "抱歉，我遇到了一些问题，无法正确回答您的问题。");
@@ -96,23 +111,13 @@ Page({
       newMessage.travelPlanData = travelPlanData;
     }
     const newChatHistory = [...this.data.chatHistory, newMessage];
-    const scrollToView = `msg-${newChatHistory.length - 1}`;
     
     this.setData({
       chatHistory: newChatHistory,
-      scrollToView: scrollToView
+      scrollToView: `msg-${newChatHistory.length - 1}`  // 更新滚动位置
     }, () => {
-      // 在 setData 的回调函数中执行滚动操作
-      wx.createSelectorQuery()
-        .select('.chat-area')
-        .node()
-        .exec((res) => {
-          const scrollView = res[0].node;
-          scrollView.scrollIntoView({
-            selector: `#${scrollToView}`,
-            animated: true
-          });
-        });
+      // 确保消息添加后滚动到底部
+      this.scrollToBottom();
     });
   },
 
@@ -185,7 +190,7 @@ Page({
 
   handleOneDayTravelPlan() {
     const planData = this.generateTravelPlan();
-    const aiResponse = "好的，我为您生成了一份一日出行规划。以下是详细安排：";
+    const aiResponse = "好的，我为您生成了一份一日出行规划���以下是详细安排：";
     
     this.addMessageToChat('ai', aiResponse, planData);
   },
@@ -225,7 +230,7 @@ Page({
 
   getRandomPetFriendlyReason() {
     const reasons = [
-      '提供宠物专属座位和餐具',
+      '提供宠物���属座位和餐具',
       '有专门的宠物活动区域',
       '提供宠物美容和护理服务',
       '有专业的宠物摄影师',
@@ -258,5 +263,21 @@ Page({
         travelPlanData: planData
       });
     }, 3000);
+  },
+
+  scrollToBottom() {
+    const query = wx.createSelectorQuery();
+    query.select('.chat-area').boundingClientRect();
+    query.selectViewport().scrollOffset();
+    query.exec((res) => {
+      if (res[0] && res[1]) {
+        const scrollHeight = res[1].scrollHeight;
+        const scrollTop = scrollHeight - res[0].height;
+        wx.pageScrollTo({
+          scrollTop: scrollTop,
+          duration: 300
+        });
+      }
+    });
   },
 });
