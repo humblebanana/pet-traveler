@@ -9,7 +9,7 @@ Page({
     initialMessages: [
       "hello，我是您的宠物的好朋友小浣熊，我和我的主人有很多city walk的旅游路线可以推荐，请告诉我您的偏好吧～",
       "hello，我是您的宠物的好朋友小狮子，我和我的主人有很多国内的旅游路线可以推荐，请您告诉我的偏好吧～",
-      "hello，我是您的宠物的好朋友小狮子，我和我的主人有很多国外的旅游路线可以推荐，请您告诉我的偏好吧～"
+      "hello，我是您的宠物的好朋友猫头鹰，我和我的主人有很多国外的旅游路线可以推荐，请您告诉我的偏好吧～"
     ],
     isAIThinking: false,
     showTravelPlan: false,
@@ -37,6 +37,9 @@ Page({
     const userMessage = this.data.inputValue;
     this.addMessageToChat('user', userMessage);
     this.setData({ inputValue: '' });
+    console.log("q:", userMessage)
+    this.GLM4(userMessage)
+
 
     if (this.data.isWaitingForTravelInfo) {
       this.handleTravelInfoResponse(userMessage);
@@ -46,6 +49,41 @@ Page({
       this.generateAIResponse(userMessage);
     }
   },
+  GLM4(content) {
+    const that = this;
+    wx.request({
+      url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'e9ac68ed0ee2d619e73c3c6f26842669.2g0XZMeavxkO6shd'
+      },
+      data: {
+        model: "glm-4-0520",
+        messages: [
+          {"role": "user", "content": content}
+        ],
+        temperature: 0.7,
+        top_p: 0.9
+      },
+      success(res) {
+        console.log("API响应:", res.data);
+        if (res.data && res.data.choices && res.data.choices.length > 0) {
+          const robContent = res.data.choices[0].message.content;
+          console.log("AI回复:", robContent);
+          that.addMessageToChat('ai', robContent);
+        } else {
+          console.error("API响应格式不正确:", res.data);
+          that.addMessageToChat('ai', "抱歉，我遇到了一些问题，无法正确回答您的问题。");
+        }
+      },
+      fail(err) {
+        console.error("API调用失败", err);
+        that.addMessageToChat('ai', "抱歉，我暂时无法连接到服务器。请稍后再试。");
+      }
+    });
+  },
+
 
   addMessageToChat(sender, content, travelPlanData = null) {
     const newMessage = { 
@@ -63,6 +101,18 @@ Page({
     this.setData({
       chatHistory: newChatHistory,
       scrollToView: scrollToView
+    }, () => {
+      // 在 setData 的回调函数中执行滚动操作
+      wx.createSelectorQuery()
+        .select('.chat-area')
+        .node()
+        .exec((res) => {
+          const scrollView = res[0].node;
+          scrollView.scrollIntoView({
+            selector: `#${scrollToView}`,
+            animated: true
+          });
+        });
     });
   },
 
@@ -107,7 +157,7 @@ Page({
 
   onQuickAction(e) {
     const action = e.currentTarget.dataset.action;
-    if (action === '一日出行���划') {
+    if (action === '一日出行规划') {
       this.handleTravelPlanRequest();
       this.setData({ showQuickActions: false });
       return;
